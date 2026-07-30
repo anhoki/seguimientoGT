@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+from datetime import datetime, date
 
 # ============ CONFIGURACIÓN ============
 st.set_page_config(
@@ -237,6 +238,142 @@ def mostrar_alertas(df, programa_filtro=None):
     else:
         st.success("✅ ¡Todos los indicadores están en verde!")
 
+# ============ FUNCIÓN RESÚMEN EJECUTIVO ============
+
+def mostrar_resumen_ejecutivo():
+    """Muestra el resumen ejecutivo con cronograma, finanzas y metas"""
+    
+    st.header("📊 Resumen Ejecutivo")
+    
+    # ===== 1. CRONOGRAMA DEL PROGRAMA =====
+    st.subheader("📋 Cronograma del Programa")
+    
+    # Fechas de los proyectos
+    fechas = {
+        '🔵 GT': {'inicio': date(2026, 5, 1), 'fin': date(2026, 11, 30)},
+        '🔷 ES': {'inicio': date(2026, 5, 1), 'fin': date(2026, 11, 30)},
+        '🔹 ACNUR': {'inicio': date(2026, 5, 1), 'fin': date(2026, 10, 31)},
+        '🟢 PMA': {'inicio': date(2026, 5, 1), 'fin': date(2026, 10, 31)}
+    }
+    
+    hoy = date(2026, 7, 30)  # Fecha actual simulada
+    
+    cronograma_data = []
+    for programa, fechas_prog in fechas.items():
+        total_dias = (fechas_prog['fin'] - fechas_prog['inicio']).days
+        dias_transcurridos = (hoy - fechas_prog['inicio']).days
+        if dias_transcurridos < 0:
+            pct = 0
+        elif dias_transcurridos > total_dias:
+            pct = 100
+        else:
+            pct = (dias_transcurridos / total_dias * 100)
+        cronograma_data.append({
+            'Programa': programa,
+            '% Tiempo': round(pct, 1),
+            'Inicio': fechas_prog['inicio'].strftime('%d/%m/%Y'),
+            'Fin': fechas_prog['fin'].strftime('%d/%m/%Y'),
+            'Días': f"{dias_transcurridos}/{total_dias}"
+        })
+    
+    df_cronograma = pd.DataFrame(cronograma_data)
+    
+    # Mostrar barras de progreso
+    cols = st.columns(len(df_cronograma))
+    for idx, (col, row) in enumerate(zip(cols, df_cronograma.iterrows())):
+        with col:
+            _, row_data = row
+            prog = row_data['% Tiempo']
+            st.metric(
+                label=f"{row_data['Programa']}",
+                value=f"{prog:.0f}%",
+                delta=f"{row_data['Días']} días"
+            )
+            st.progress(prog/100)
+            st.caption(f"{row_data['Inicio']} → {row_data['Fin']}")
+    
+    st.markdown("---")
+    
+    # ===== 2. AVANCE FINANCIERO =====
+    st.subheader("💰 Avance Financiero")
+    
+    # Datos financieros simulados
+    finanzas_data = [
+        {'Programa': '🔵 GT', 'Presupuesto': 4000000, 'Ejecutado': 2800000},
+        {'Programa': '🔷 ES', 'Presupuesto': 5000000, 'Ejecutado': 3200000},
+        {'Programa': '🔹 ACNUR', 'Presupuesto': 1000000, 'Ejecutado': 700000},
+        {'Programa': '🟢 PMA', 'Presupuesto': 1000000, 'Ejecutado': 600000}
+    ]
+    
+    df_finanzas = pd.DataFrame(finanzas_data)
+    df_finanzas['% Ejecución'] = (df_finanzas['Ejecutado'] / df_finanzas['Presupuesto'] * 100).round(1)
+    df_finanzas['Estado'] = df_finanzas['% Ejecución'].apply(get_estado)
+    
+    # Formatear como moneda
+    df_finanzas['Presupuesto'] = df_finanzas['Presupuesto'].apply(lambda x: f"${x/1000000:.1f}M")
+    df_finanzas['Ejecutado'] = df_finanzas['Ejecutado'].apply(lambda x: f"${x/1000000:.1f}M")
+    
+    st.dataframe(
+        df_finanzas[['Programa', 'Presupuesto', 'Ejecutado', '% Ejecución', 'Estado']],
+        use_container_width=True,
+        hide_index=True,
+        column_config={
+            'Programa': 'Programa',
+            'Presupuesto': 'Presupuesto',
+            'Ejecutado': 'Ejecutado',
+            '% Ejecución': st.column_config.NumberColumn('% Ejecución', format="%.1f%%"),
+            'Estado': 'Estado'
+        }
+    )
+    
+    # Gráfico de barras financiero (usando st.bar_chart)
+    st.caption("📊 Comparativa de Ejecución Financiera")
+    chart_data = df_finanzas.copy()
+    chart_data['% Ejecución'] = chart_data['% Ejecución'].astype(float)
+    st.bar_chart(chart_data.set_index('Programa')['% Ejecución'], height=250)
+    
+    st.markdown("---")
+    
+    # ===== 3. AVANCE DE METAS =====
+    st.subheader("🎯 Avance de Metas")
+    
+    # Calcular cumplimiento por programa
+    gt_pct = (df_gt['logro'].sum() / df_gt['meta'].sum() * 100)
+    es_pct = (df_es['logro'].sum() / df_es['meta'].sum() * 100)
+    
+    df_hn_acnur = df_hn[df_hn['programa'] == '🔹 ACNUR']
+    hn_acnur_pct = (df_hn_acnur['logro'].sum() / df_hn_acnur['meta'].sum() * 100) if len(df_hn_acnur) > 0 else 0
+    
+    df_hn_pma = df_hn[df_hn['programa'] == '🟢 PMA']
+    hn_pma_pct = (df_hn_pma['logro'].sum() / df_hn_pma['meta'].sum() * 100) if len(df_hn_pma) > 0 else 0
+    
+    metas_data = [
+        {'Programa': '🔵 GT', 'Cumplimiento': gt_pct, 'Estado': get_estado(gt_pct)},
+        {'Programa': '🔷 ES', 'Cumplimiento': es_pct, 'Estado': get_estado(es_pct)},
+        {'Programa': '🔹 ACNUR', 'Cumplimiento': hn_acnur_pct, 'Estado': get_estado(hn_acnur_pct)},
+        {'Programa': '🟢 PMA', 'Cumplimiento': hn_pma_pct, 'Estado': get_estado(hn_pma_pct)}
+    ]
+    
+    df_metas = pd.DataFrame(metas_data)
+    df_metas['Cumplimiento'] = df_metas['Cumplimiento'].round(1)
+    
+    # Mostrar tarjetas de cumplimiento
+    cols = st.columns(len(df_metas))
+    for idx, (col, row) in enumerate(zip(cols, df_metas.iterrows())):
+        with col:
+            _, row_data = row
+            st.metric(
+                label=f"{row_data['Programa']}",
+                value=f"{row_data['Cumplimiento']:.0f}%",
+                delta=row_data['Estado']
+            )
+    
+    # Gráfico de barras de cumplimiento
+    st.caption("📊 Comparativa de Cumplimiento de Metas")
+    chart_data2 = df_metas.copy()
+    chart_data2['Cumplimiento'] = chart_data2['Cumplimiento'].astype(float)
+    st.bar_chart(chart_data2.set_index('Programa')['Cumplimiento'], height=250, color='#1a5276')
+
 # ============ INTERFAZ PRINCIPAL ============
 
 st.title("🌍 Monitoreo Humanitario - Centroamérica")
@@ -274,46 +411,48 @@ with st.sidebar:
     st.metric("🔹 HN - ACNUR", f"{hn_acnur_global:.1f}%")
     st.metric("🟢 HN - PMA", f"{hn_pma_global:.1f}%")
 
-# ============ MAPA ============
-st.subheader("🗺️ Mapa de Intervención")
+# ============ PESTAÑAS ============
+tab_resumen, tab_mapa, tab_gt, tab_es, tab_hn = st.tabs([
+    "📊 Resumen Ejecutivo",
+    "🗺️ Mapa",
+    "🔵 Guatemala",
+    "🔷 El Salvador",
+    "🇭🇳 Honduras"
+])
 
-# Filtrar datos para el mapa
-df_mapa = df_municipios.copy()
-if pais_filtro != 'Todos':
-    df_mapa = df_mapa[df_mapa['pais'] == pais_filtro]
-if programa_filtro != 'Todos' and pais_filtro == 'Honduras':
-    df_mapa = df_mapa[df_mapa['programa'] == programa_filtro]
+with tab_resumen:
+    mostrar_resumen_ejecutivo()
 
-if len(df_mapa) > 0:
-    # Mostrar mapa con st.map() (nativo de Streamlit)
-    st.map(df_mapa[['lat', 'lon']], zoom=6, use_container_width=True)
+with tab_mapa:
+    st.header("🗺️ Mapa de Intervención")
     
-    # Leyenda de colores
-    st.caption("🔵 GT | 🔷 ES | 🔹 ACNUR | 🟢 PMA")
+    # Filtrar datos para el mapa
+    df_mapa = df_municipios.copy()
+    if pais_filtro != 'Todos':
+        df_mapa = df_mapa[df_mapa['pais'] == pais_filtro]
+    if programa_filtro != 'Todos' and pais_filtro == 'Honduras':
+        df_mapa = df_mapa[df_mapa['programa'] == programa_filtro]
     
-    # Mostrar tabla de municipios
-    st.dataframe(
-        df_mapa[['municipio', 'departamento', 'pais', 'programa', 'cumplimiento']],
-        use_container_width=True,
-        hide_index=True,
-        column_config={
-            'municipio': 'Municipio',
-            'departamento': 'Departamento',
-            'pais': 'País',
-            'programa': 'Programa',
-            'cumplimiento': st.column_config.NumberColumn('Cumplimiento %', format="%.0f%%")
-        }
-    )
-else:
-    st.info("No hay municipios para mostrar con los filtros seleccionados.")
+    if len(df_mapa) > 0:
+        st.map(df_mapa[['lat', 'lon']], zoom=6, use_container_width=True)
+        st.caption("🔵 GT | 🔷 ES | 🔹 ACNUR | 🟢 PMA")
+        
+        st.dataframe(
+            df_mapa[['municipio', 'departamento', 'pais', 'programa', 'cumplimiento']],
+            use_container_width=True,
+            hide_index=True,
+            column_config={
+                'municipio': 'Municipio',
+                'departamento': 'Departamento',
+                'pais': 'País',
+                'programa': 'Programa',
+                'cumplimiento': st.column_config.NumberColumn('Cumplimiento %', format="%.0f%%")
+            }
+        )
+    else:
+        st.info("No hay municipios para mostrar con los filtros seleccionados.")
 
-# ============ DETALLE DE PROYECTOS ============
-st.markdown("---")
-st.subheader("📊 Datos de Proyectos por País")
-
-tab1, tab2, tab3 = st.tabs(["🔵 Guatemala", "🔷 El Salvador", "🇭🇳 Honduras"])
-
-with tab1:
+with tab_gt:
     st.header("🔵 Guatemala")
     st.caption("Período: Mayo - Noviembre 2026")
     
@@ -334,7 +473,7 @@ with tab1:
     mostrar_tabla_indicadores(df_gt)
     mostrar_alertas(df_gt)
 
-with tab2:
+with tab_es:
     st.header("🔷 El Salvador")
     st.caption("Período: Mayo - Noviembre 2026")
     
@@ -358,54 +497,8 @@ with tab2:
     mostrar_tabla_indicadores(df_es)
     mostrar_alertas(df_es)
 
-with tab3:
+with tab_hn:
     st.header("🇭🇳 Honduras")
     st.caption("Período: Mayo - Octubre 2026")
     
-    hn_programa = st.radio("📂 Seleccionar Programa", options=['Todos', '🔹 ACNUR', '🟢 PMA'], horizontal=True)
-    
-    if hn_programa == '🔹 ACNUR' or hn_programa == 'Todos':
-        st.subheader("🔹 ACNUR")
-        df_hn_acnur = df_hn[df_hn['programa'] == '🔹 ACNUR']
-        
-        col1, col2, col3, col4 = st.columns(4)
-        with col1:
-            pct = df_hn_acnur[df_hn_acnur['categoria']=='Gestión de Casos']['% Cumplimiento'].mean()
-            st.metric("Gestión Casos", f"{pct:.0f}%")
-        with col2:
-            pct = df_hn_acnur[df_hn_acnur['categoria']=='SMAPS']['% Cumplimiento'].mean()
-            st.metric("SMAPS", f"{pct:.0f}%")
-        with col3:
-            pct = df_hn_acnur[df_hn_acnur['categoria']=='Entrega de Kits']['% Cumplimiento'].mean()
-            st.metric("Kits", f"{pct:.0f}%")
-        with col4:
-            pct = df_hn_acnur[df_hn_acnur['categoria']=='Fortalecimiento Liderazgo']['% Cumplimiento'].mean()
-            st.metric("Liderazgo", f"{pct:.0f}%")
-        
-        mostrar_tabla_indicadores(df_hn_acnur, '🔹 ACNUR')
-        mostrar_alertas(df_hn_acnur, '🔹 ACNUR')
-        st.markdown("---")
-    
-    if hn_programa == '🟢 PMA' or hn_programa == 'Todos':
-        st.subheader("🟢 PMA")
-        df_hn_pma = df_hn[df_hn['programa'] == '🟢 PMA']
-        
-        col1, col2, col3 = st.columns(3)
-        with col1:
-            pct = df_hn_pma[df_hn_pma['categoria']=='Objetivo 1']['% Cumplimiento'].mean()
-            st.metric("Objetivo 1 (Sensibilización)", f"{pct:.0f}%")
-        with col2:
-            pct = df_hn_pma[df_hn_pma['categoria']=='Objetivo 2']['% Cumplimiento'].mean()
-            st.metric("Objetivo 2 (Acompañamiento)", f"{pct:.0f}%")
-        with col3:
-            pct = df_hn_pma[df_hn_pma['categoria']=='Objetivo 3']['% Cumplimiento'].mean()
-            st.metric("Objetivo 3 (Monitoreo)", f"{pct:.0f}%")
-        
-        mostrar_tabla_indicadores(df_hn_pma, '🟢 PMA')
-        mostrar_alertas(df_hn_pma, '🟢 PMA')
-
-# ============ FOOTER ============
-st.markdown("---")
-st.caption("📅 Datos simulados - Última actualización: 30 de julio 2026")
-st.caption("💡 GT y ES: Mayo - Noviembre 2026 | HN: Mayo - Octubre 2026")
-st.caption("🔵 GT | 🔷 ES | 🔹 ACNUR | 🟢 PMA")
+    hn_programa = st.radio("
