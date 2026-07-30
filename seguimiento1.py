@@ -1,20 +1,52 @@
 import streamlit as st
 import pandas as pd
+
+# ============ MANEJO DE PLOTLY (SIEMPRE JUNTOS) ============
 try:
     import plotly.express as px
     import plotly.graph_objects as go
     PLOTLY_AVAILABLE = True
 except ImportError:
     PLOTLY_AVAILABLE = False
-    st.warning("⚠️ Plotly no está disponible. Algunos gráficos no se mostrarán.")
+    # Definir dummies para que el código no falle
+    class DummyPlotly:
+        def __init__(self, *args, **kwargs):
+            pass
+        def __call__(self, *args, **kwargs):
+            return self
+        def __getattr__(self, name):
+            return self
+        def update_layout(self, *args, **kwargs):
+            return self
+        def add_trace(self, *args, **kwargs):
+            return self
+        def add_to(self, *args, **kwargs):
+            return self
+        def Figure(self, *args, **kwargs):
+            return self
+        def Scatterpolar(self, *args, **kwargs):
+            return self
+        def bar(self, *args, **kwargs):
+            return self
+        def line(self, *args, **kwargs):
+            return self
     
-import plotly.graph_objects as go
-import folium
-from folium.plugins import MarkerCluster, HeatMap
-from streamlit_folium import folium_static
+    px = DummyPlotly()
+    go = DummyPlotly()
+    st.warning("⚠️ Plotly no está disponible. Usando gráficos nativos de Streamlit.")
+
+# ============ RESTO DE TUS IMPORTS ============
+try:
+    import folium
+    from folium.plugins import MarkerCluster, HeatMap
+    from streamlit_folium import folium_static
+    FOLIUM_AVAILABLE = True
+except ImportError:
+    FOLIUM_AVAILABLE = False
+    st.error("❌ Folium no está disponible. El mapa no se mostrará.")
+
 import json
 import numpy as np
-
 # ============ CONFIGURACIÓN ============
 st.set_page_config(
     page_title="Monitoreo Humanitario - Centroamérica",
