@@ -1,6 +1,13 @@
 import streamlit as st
 import pandas as pd
-import plotly.express as px
+try:
+    import plotly.express as px
+    import plotly.graph_objects as go
+    PLOTLY_AVAILABLE = True
+except ImportError:
+    PLOTLY_AVAILABLE = False
+    st.warning("⚠️ Plotly no está disponible. Algunos gráficos no se mostrarán.")
+    
 import plotly.graph_objects as go
 import folium
 from folium.plugins import MarkerCluster, HeatMap
