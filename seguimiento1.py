@@ -1,7 +1,5 @@
 import streamlit as st
 import pandas as pd
-import plotly.express as px
-import plotly.graph_objects as go
 import numpy as np
 
 # ============ CONFIGURACIÓN ============
@@ -131,7 +129,7 @@ data_hn_combinado = {
 
 data_hn = data_hn_combinado
 
-# ============ DATOS DE MUNICIPIOS (para el mapa) ============
+# ============ DATOS DE MUNICIPIOS ============
 municipios_data = [
     # GT
     {'pais': 'Guatemala', 'departamento': 'Alta Verapaz', 'municipio': 'Santa Catalina La Tinta', 'lat': 15.5975, 'lon': -89.8857, 'cumplimiento': 82, 'programa': 'GT'},
@@ -192,7 +190,7 @@ df_hn = procesar_data(data_hn, 'Honduras')
 
 # ============ FUNCIONES DE VISUALIZACIÓN ============
 
-def mostrar_tabla_indicadores(df, proyecto, programa_filtro=None):
+def mostrar_tabla_indicadores(df, programa_filtro=None):
     df_display = df.copy()
     if programa_filtro and 'programa' in df_display.columns and programa_filtro != 'Todos':
         df_display = df_display[df_display['programa'] == programa_filtro]
@@ -266,7 +264,7 @@ with st.sidebar:
     st.metric("🇭🇳 HN - ACNUR", f"{hn_acnur_global:.1f}%")
     st.metric("🇭🇳 HN - PMA", f"{hn_pma_global:.1f}%")
 
-# ============ MAPA CON ST.MAP() ============
+# ============ MAPA ============
 st.subheader("🗺️ Mapa de Intervención")
 
 # Filtrar datos para el mapa
@@ -276,14 +274,12 @@ if pais_filtro != 'Todos':
 if programa_filtro != 'Todos':
     df_mapa = df_mapa[df_mapa['programa'] == programa_filtro]
 
-# Crear mapa con st.map()
 if len(df_mapa) > 0:
-    # Preparar datos para el mapa
+    # Preparar datos para el mapa - usar tamaño proporcional al cumplimiento
     mapa_data = df_mapa[['lat', 'lon']].copy()
-    mapa_data['size'] = df_mapa['cumplimiento'] / 10  # Tamaño proporcional
     
-    # Mostrar mapa
-    st.map(mapa_data, size='size', zoom=6, use_container_width=True)
+    # Mostrar mapa con st.map() (nativo de Streamlit)
+    st.map(mapa_data, zoom=6, use_container_width=True)
     
     # Mostrar tabla de municipios
     st.dataframe(
@@ -325,7 +321,7 @@ with tab1:
         pct = df_gt[df_gt['categoria']=='Seguridad Alimentaria']['% Cumplimiento'].mean()
         st.metric("Seg. Alim (58%)", f"{pct:.0f}%")
     
-    mostrar_tabla_indicadores(df_gt, 'Guatemala')
+    mostrar_tabla_indicadores(df_gt)
     mostrar_alertas(df_gt)
 
 with tab2:
@@ -349,7 +345,7 @@ with tab2:
         pct = df_es[df_es['categoria']=='Seguridad Alimentaria']['% Cumplimiento'].mean()
         st.metric("Seg. Alim (56%)", f"{pct:.0f}%")
     
-    mostrar_tabla_indicadores(df_es, 'El Salvador')
+    mostrar_tabla_indicadores(df_es)
     mostrar_alertas(df_es)
 
 with tab3:
@@ -376,7 +372,7 @@ with tab3:
             pct = df_hn_acnur[df_hn_acnur['categoria']=='Fortalecimiento Liderazgo']['% Cumplimiento'].mean()
             st.metric("Liderazgo", f"{pct:.0f}%")
         
-        mostrar_tabla_indicadores(df_hn_acnur, 'Honduras', 'ACNUR')
+        mostrar_tabla_indicadores(df_hn_acnur, 'ACNUR')
         mostrar_alertas(df_hn_acnur, 'ACNUR')
         st.markdown("---")
     
@@ -395,7 +391,7 @@ with tab3:
             pct = df_hn_pma[df_hn_pma['categoria']=='Objetivo 3']['% Cumplimiento'].mean()
             st.metric("Objetivo 3 (Monitoreo)", f"{pct:.0f}%")
         
-        mostrar_tabla_indicadores(df_hn_pma, 'Honduras', 'PMA')
+        mostrar_tabla_indicadores(df_hn_pma, 'PMA')
         mostrar_alertas(df_hn_pma, 'PMA')
 
 # ============ FOOTER ============
