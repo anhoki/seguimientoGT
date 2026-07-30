@@ -417,7 +417,7 @@ tab_resumen, tab_mapa, tab_gt, tab_es, tab_hn = st.tabs([
     "🗺️ Mapa",
     "🔵 Guatemala",
     "🔷 El Salvador",
-    "🇭🇳 Honduras"
+    "🟢 Honduras"
 ])
 
 with tab_resumen:
