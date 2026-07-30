@@ -501,4 +501,44 @@ with tab_hn:
     st.header("🇭🇳 Honduras")
     st.caption("Período: Mayo - Octubre 2026")
     
-    hn_programa = st.radio("
+    hn_programa = st.radio("📂 Seleccionar Programa", options=['Todos', '🔹 ACNUR', '🟢 PMA'], horizontal=True)
+    
+    if hn_programa == '🔹 ACNUR' or hn_programa == 'Todos':
+        st.subheader("🔹 ACNUR")
+        df_hn_acnur = df_hn[df_hn['programa'] == '🔹 ACNUR']
+        
+        col1, col2, col3, col4 = st.columns(4)
+        with col1:
+            pct = df_hn_acnur[df_hn_acnur['categoria']=='Gestión de Casos']['% Cumplimiento'].mean()
+            st.metric("Gestión Casos", f"{pct:.0f}%")
+        with col2:
+            pct = df_hn_acnur[df_hn_acnur['categoria']=='SMAPS']['% Cumplimiento'].mean()
+            st.metric("SMAPS", f"{pct:.0f}%")
+        with col3:
+            pct = df_hn_acnur[df_hn_acnur['categoria']=='Entrega de Kits']['% Cumplimiento'].mean()
+            st.metric("Kits", f"{pct:.0f}%")
+        with col4:
+            pct = df_hn_acnur[df_hn_acnur['categoria']=='Fortalecimiento Liderazgo']['% Cumplimiento'].mean()
+            st.metric("Liderazgo", f"{pct:.0f}%")
+        
+        mostrar_tabla_indicadores(df_hn_acnur, '🔹 ACNUR')
+        mostrar_alertas(df_hn_acnur, '🔹 ACNUR')
+        st.markdown("---")
+    
+    if hn_programa == '🟢 PMA' or hn_programa == 'Todos':
+        st.subheader("🟢 PMA")
+        df_hn_pma = df_hn[df_hn['programa'] == '🟢 PMA']
+        
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            pct = df_hn_pma[df_hn_pma['categoria']=='Objetivo 1']['% Cumplimiento'].mean()
+            st.metric("Objetivo 1 (Sensibilización)", f"{pct:.0f}%")
+        with col2:
+            pct = df_hn_pma[df_hn_pma['categoria']=='Objetivo 2']['% Cumplimiento'].mean()
+            st.metric("Objetivo 2 (Acompañamiento)", f"{pct:.0f}%")
+        with col3:
+            pct = df_hn_pma[df_hn_pma['categoria']=='Objetivo 3']['% Cumplimiento'].mean()
+            st.metric("Objetivo 3 (Monitoreo)", f"{pct:.0f}%")
+        
+        mostrar_tabla_indicadores(df_hn_pma, '🟢 PMA')
+        mostrar_alertas(df_hn_pma, '🟢 PMA')
