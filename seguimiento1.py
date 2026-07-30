@@ -129,41 +129,41 @@ data_hn_combinado = {
 
 data_hn = data_hn_combinado
 
-# ============ DATOS DE MUNICIPIOS ============
+# ============ DATOS DE MUNICIPIOS CON DISTINCIÓN VISUAL ============
 municipios_data = [
     # GT
-    {'pais': 'Guatemala', 'departamento': 'Alta Verapaz', 'municipio': 'Santa Catalina La Tinta', 'lat': 15.5975, 'lon': -89.8857, 'cumplimiento': 82, 'programa': 'GT'},
-    {'pais': 'Guatemala', 'departamento': 'Alta Verapaz', 'municipio': 'Panzós (Telemán)', 'lat': 15.4000, 'lon': -89.6667, 'cumplimiento': 68, 'programa': 'GT'},
-    {'pais': 'Guatemala', 'departamento': 'Quiché', 'municipio': 'San Antonio Ilotenango', 'lat': 15.0497, 'lon': -91.2670, 'cumplimiento': 85, 'programa': 'GT'},
-    {'pais': 'Guatemala', 'departamento': 'Quiché', 'municipio': 'Joyabaj', 'lat': 14.9928, 'lon': -90.8000, 'cumplimiento': 72, 'programa': 'GT'},
-    {'pais': 'Guatemala', 'departamento': 'Quiché', 'municipio': 'Canillá', 'lat': 15.1467, 'lon': -91.3158, 'cumplimiento': 88, 'programa': 'GT'},
+    {'pais': 'Guatemala', 'departamento': 'Alta Verapaz', 'municipio': '📍 Santa Catalina La Tinta', 'lat': 15.5975, 'lon': -89.8857, 'cumplimiento': 82, 'programa': 'GT'},
+    {'pais': 'Guatemala', 'departamento': 'Alta Verapaz', 'municipio': '📍 Panzós (Telemán)', 'lat': 15.4000, 'lon': -89.6667, 'cumplimiento': 68, 'programa': 'GT'},
+    {'pais': 'Guatemala', 'departamento': 'Quiché', 'municipio': '📍 San Antonio Ilotenango', 'lat': 15.0497, 'lon': -91.2670, 'cumplimiento': 85, 'programa': 'GT'},
+    {'pais': 'Guatemala', 'departamento': 'Quiché', 'municipio': '📍 Joyabaj', 'lat': 14.9928, 'lon': -90.8000, 'cumplimiento': 72, 'programa': 'GT'},
+    {'pais': 'Guatemala', 'departamento': 'Quiché', 'municipio': '📍 Canillá', 'lat': 15.1467, 'lon': -91.3158, 'cumplimiento': 88, 'programa': 'GT'},
     # ES
-    {'pais': 'El Salvador', 'departamento': 'Santa Ana', 'municipio': 'Santa Ana Este', 'lat': 14.0167, 'lon': -89.4333, 'cumplimiento': 75, 'programa': 'ES'},
-    {'pais': 'El Salvador', 'departamento': 'Santa Ana', 'municipio': 'Santa Ana Centro', 'lat': 14.0200, 'lon': -89.4400, 'cumplimiento': 78, 'programa': 'ES'},
-    {'pais': 'El Salvador', 'departamento': 'Ahuachapán', 'municipio': 'Ahuachapán Sur', 'lat': 13.9333, 'lon': -89.8500, 'cumplimiento': 70, 'programa': 'ES'},
-    {'pais': 'El Salvador', 'departamento': 'Chalatenango', 'municipio': 'Chalatenango Centro', 'lat': 14.0333, 'lon': -89.0500, 'cumplimiento': 68, 'programa': 'ES'},
-    {'pais': 'El Salvador', 'departamento': 'La Unión', 'municipio': 'La Unión Norte', 'lat': 13.5000, 'lon': -87.8667, 'cumplimiento': 65, 'programa': 'ES'},
-    {'pais': 'El Salvador', 'departamento': 'La Libertad', 'municipio': 'La Libertad Centro', 'lat': 13.6833, 'lon': -89.2833, 'cumplimiento': 74, 'programa': 'ES'},
-    {'pais': 'El Salvador', 'departamento': 'La Libertad', 'municipio': 'La Libertad Costa', 'lat': 13.6900, 'lon': -89.2900, 'cumplimiento': 72, 'programa': 'ES'},
-    {'pais': 'El Salvador', 'departamento': 'La Libertad', 'municipio': 'La Libertad Oeste', 'lat': 13.7000, 'lon': -89.3000, 'cumplimiento': 70, 'programa': 'ES'},
-    {'pais': 'El Salvador', 'departamento': 'Morazán', 'municipio': 'Morazán Sur', 'lat': 13.7667, 'lon': -88.1000, 'cumplimiento': 68, 'programa': 'ES'},
-    {'pais': 'El Salvador', 'departamento': 'San Miguel', 'municipio': 'San Miguel Centro', 'lat': 13.4833, 'lon': -88.1833, 'cumplimiento': 76, 'programa': 'ES'},
-    {'pais': 'El Salvador', 'departamento': 'San Salvador', 'municipio': 'San Salvador Este', 'lat': 13.7000, 'lon': -89.1900, 'cumplimiento': 80, 'programa': 'ES'},
-    {'pais': 'El Salvador', 'departamento': 'San Salvador', 'municipio': 'San Salvador Oeste', 'lat': 13.7000, 'lon': -89.2100, 'cumplimiento': 78, 'programa': 'ES'},
-    {'pais': 'El Salvador', 'departamento': 'San Salvador', 'municipio': 'San Salvador Sur', 'lat': 13.6900, 'lon': -89.2000, 'cumplimiento': 75, 'programa': 'ES'},
-    {'pais': 'El Salvador', 'departamento': 'Usulután', 'municipio': 'Usulután Este', 'lat': 13.4167, 'lon': -88.4667, 'cumplimiento': 69, 'programa': 'ES'},
-    # HN - ACNUR
-    {'pais': 'Honduras', 'departamento': 'Santa Bárbara', 'municipio': 'Santa Bárbara', 'lat': 15.4667, 'lon': -88.3667, 'cumplimiento': 85, 'programa': 'ACNUR'},
-    {'pais': 'Honduras', 'departamento': 'Santa Bárbara', 'municipio': 'Quimistán', 'lat': 15.3500, 'lon': -88.4000, 'cumplimiento': 82, 'programa': 'ACNUR'},
-    {'pais': 'Honduras', 'departamento': 'Cortés', 'municipio': 'San Pedro Sula', 'lat': 15.5000, 'lon': -88.0333, 'cumplimiento': 88, 'programa': 'ACNUR'},
-    {'pais': 'Honduras', 'departamento': 'Francisco Morazán', 'municipio': 'Villa Nueva', 'lat': 14.0333, 'lon': -87.0833, 'cumplimiento': 80, 'programa': 'ACNUR'},
-    {'pais': 'Honduras', 'departamento': 'Francisco Morazán', 'municipio': 'Tegucigalpa', 'lat': 14.0833, 'lon': -87.2167, 'cumplimiento': 86, 'programa': 'ACNUR'},
-    {'pais': 'Honduras', 'departamento': 'Ocotepeque', 'municipio': 'Ocotepeque', 'lat': 14.4333, 'lon': -89.2000, 'cumplimiento': 78, 'programa': 'ACNUR'},
-    {'pais': 'Honduras', 'departamento': 'Comayagua', 'municipio': 'Comayagua', 'lat': 14.4500, 'lon': -87.6333, 'cumplimiento': 84, 'programa': 'ACNUR'},
-    # HN - PMA
-    {'pais': 'Honduras', 'departamento': 'Santa Bárbara', 'municipio': 'Santa Bárbara (PMA)', 'lat': 15.4750, 'lon': -88.3750, 'cumplimiento': 76, 'programa': 'PMA'},
-    {'pais': 'Honduras', 'departamento': 'Santa Bárbara', 'municipio': 'Quimistán (PMA)', 'lat': 15.3580, 'lon': -88.4080, 'cumplimiento': 76, 'programa': 'PMA'},
-    {'pais': 'Honduras', 'departamento': 'Ocotepeque', 'municipio': 'Ocotepeque (PMA)', 'lat': 14.4400, 'lon': -89.2100, 'cumplimiento': 79, 'programa': 'PMA'}
+    {'pais': 'El Salvador', 'departamento': 'Santa Ana', 'municipio': '📍 Santa Ana Este', 'lat': 14.0167, 'lon': -89.4333, 'cumplimiento': 75, 'programa': 'ES'},
+    {'pais': 'El Salvador', 'departamento': 'Santa Ana', 'municipio': '📍 Santa Ana Centro', 'lat': 14.0200, 'lon': -89.4400, 'cumplimiento': 78, 'programa': 'ES'},
+    {'pais': 'El Salvador', 'departamento': 'Ahuachapán', 'municipio': '📍 Ahuachapán Sur', 'lat': 13.9333, 'lon': -89.8500, 'cumplimiento': 70, 'programa': 'ES'},
+    {'pais': 'El Salvador', 'departamento': 'Chalatenango', 'municipio': '📍 Chalatenango Centro', 'lat': 14.0333, 'lon': -89.0500, 'cumplimiento': 68, 'programa': 'ES'},
+    {'pais': 'El Salvador', 'departamento': 'La Unión', 'municipio': '📍 La Unión Norte', 'lat': 13.5000, 'lon': -87.8667, 'cumplimiento': 65, 'programa': 'ES'},
+    {'pais': 'El Salvador', 'departamento': 'La Libertad', 'municipio': '📍 La Libertad Centro', 'lat': 13.6833, 'lon': -89.2833, 'cumplimiento': 74, 'programa': 'ES'},
+    {'pais': 'El Salvador', 'departamento': 'La Libertad', 'municipio': '📍 La Libertad Costa', 'lat': 13.6900, 'lon': -89.2900, 'cumplimiento': 72, 'programa': 'ES'},
+    {'pais': 'El Salvador', 'departamento': 'La Libertad', 'municipio': '📍 La Libertad Oeste', 'lat': 13.7000, 'lon': -89.3000, 'cumplimiento': 70, 'programa': 'ES'},
+    {'pais': 'El Salvador', 'departamento': 'Morazán', 'municipio': '📍 Morazán Sur', 'lat': 13.7667, 'lon': -88.1000, 'cumplimiento': 68, 'programa': 'ES'},
+    {'pais': 'El Salvador', 'departamento': 'San Miguel', 'municipio': '📍 San Miguel Centro', 'lat': 13.4833, 'lon': -88.1833, 'cumplimiento': 76, 'programa': 'ES'},
+    {'pais': 'El Salvador', 'departamento': 'San Salvador', 'municipio': '📍 San Salvador Este', 'lat': 13.7000, 'lon': -89.1900, 'cumplimiento': 80, 'programa': 'ES'},
+    {'pais': 'El Salvador', 'departamento': 'San Salvador', 'municipio': '📍 San Salvador Oeste', 'lat': 13.7000, 'lon': -89.2100, 'cumplimiento': 78, 'programa': 'ES'},
+    {'pais': 'El Salvador', 'departamento': 'San Salvador', 'municipio': '📍 San Salvador Sur', 'lat': 13.6900, 'lon': -89.2000, 'cumplimiento': 75, 'programa': 'ES'},
+    {'pais': 'El Salvador', 'departamento': 'Usulután', 'municipio': '📍 Usulután Este', 'lat': 13.4167, 'lon': -88.4667, 'cumplimiento': 69, 'programa': 'ES'},
+    # HN - ACNUR (con emoji 🔵)
+    {'pais': 'Honduras', 'departamento': 'Santa Bárbara', 'municipio': '🔵 Santa Bárbara', 'lat': 15.4667, 'lon': -88.3667, 'cumplimiento': 85, 'programa': 'ACNUR'},
+    {'pais': 'Honduras', 'departamento': 'Santa Bárbara', 'municipio': '🔵 Quimistán', 'lat': 15.3500, 'lon': -88.4000, 'cumplimiento': 82, 'programa': 'ACNUR'},
+    {'pais': 'Honduras', 'departamento': 'Cortés', 'municipio': '🔵 San Pedro Sula', 'lat': 15.5000, 'lon': -88.0333, 'cumplimiento': 88, 'programa': 'ACNUR'},
+    {'pais': 'Honduras', 'departamento': 'Francisco Morazán', 'municipio': '🔵 Villa Nueva', 'lat': 14.0333, 'lon': -87.0833, 'cumplimiento': 80, 'programa': 'ACNUR'},
+    {'pais': 'Honduras', 'departamento': 'Francisco Morazán', 'municipio': '🔵 Tegucigalpa', 'lat': 14.0833, 'lon': -87.2167, 'cumplimiento': 86, 'programa': 'ACNUR'},
+    {'pais': 'Honduras', 'departamento': 'Ocotepeque', 'municipio': '🔵 Ocotepeque', 'lat': 14.4333, 'lon': -89.2000, 'cumplimiento': 78, 'programa': 'ACNUR'},
+    {'pais': 'Honduras', 'departamento': 'Comayagua', 'municipio': '🔵 Comayagua', 'lat': 14.4500, 'lon': -87.6333, 'cumplimiento': 84, 'programa': 'ACNUR'},
+    # HN - PMA (con emoji 🟢)
+    {'pais': 'Honduras', 'departamento': 'Santa Bárbara', 'municipio': '🟢 Santa Bárbara (PMA)', 'lat': 15.4750, 'lon': -88.3750, 'cumplimiento': 76, 'programa': 'PMA'},
+    {'pais': 'Honduras', 'departamento': 'Santa Bárbara', 'municipio': '🟢 Quimistán (PMA)', 'lat': 15.3580, 'lon': -88.4080, 'cumplimiento': 76, 'programa': 'PMA'},
+    {'pais': 'Honduras', 'departamento': 'Ocotepeque', 'municipio': '🟢 Ocotepeque (PMA)', 'lat': 14.4400, 'lon': -89.2100, 'cumplimiento': 79, 'programa': 'PMA'}
 ]
 
 df_municipios = pd.DataFrame(municipios_data)
@@ -240,12 +240,15 @@ with st.sidebar:
     
     pais_filtro = st.selectbox("🌍 País", options=['Todos', 'Guatemala', 'El Salvador', 'Honduras'], index=0)
     
-    if pais_filtro == 'Honduras' or pais_filtro == 'Todos':
+    # FILTRO DE PROGRAMA SOLO PARA HONDURAS
+    if pais_filtro == 'Honduras':
         programa_options = ['Todos', 'ACNUR', 'PMA']
+        programa_filtro = st.selectbox("📂 Programa", options=programa_options, index=0)
+        st.caption("🔵 ACNUR | 🟢 PMA")
     else:
-        programa_options = ['Todos']
-    
-    programa_filtro = st.selectbox("📂 Programa", options=programa_options, index=0)
+        programa_filtro = 'Todos'
+        if pais_filtro == 'Todos':
+            st.info("💡 Selecciona 'Honduras' para filtrar por programa (ACNUR/PMA)")
     
     st.markdown("---")
     st.header("📊 Resumen Global")
@@ -271,15 +274,16 @@ st.subheader("🗺️ Mapa de Intervención")
 df_mapa = df_municipios.copy()
 if pais_filtro != 'Todos':
     df_mapa = df_mapa[df_mapa['pais'] == pais_filtro]
-if programa_filtro != 'Todos':
+if programa_filtro != 'Todos' and pais_filtro == 'Honduras':
     df_mapa = df_mapa[df_mapa['programa'] == programa_filtro]
 
 if len(df_mapa) > 0:
-    # Preparar datos para el mapa - usar tamaño proporcional al cumplimiento
-    mapa_data = df_mapa[['lat', 'lon']].copy()
-    
     # Mostrar mapa con st.map() (nativo de Streamlit)
-    st.map(mapa_data, zoom=6, use_container_width=True)
+    st.map(df_mapa[['lat', 'lon']], zoom=6, use_container_width=True)
+    
+    # Leyenda de colores para HN
+    if pais_filtro == 'Honduras' or pais_filtro == 'Todos':
+        st.caption("🔵 ACNUR | 🟢 PMA | 📍 GT/ES")
     
     # Mostrar tabla de municipios
     st.dataframe(
@@ -398,3 +402,4 @@ with tab3:
 st.markdown("---")
 st.caption("📅 Datos simulados - Última actualización: 30 de julio 2026")
 st.caption("💡 GT y ES: Mayo - Noviembre 2026 | HN: Mayo - Octubre 2026")
+st.caption("🔵 ACNUR | 🟢 PMA")
